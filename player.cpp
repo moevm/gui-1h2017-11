@@ -1,6 +1,7 @@
 #include "player.h"
 
-Player::Player()
+Player::Player(QWidget *parent):
+    QWidget(parent)
 {
 
 }

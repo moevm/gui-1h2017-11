@@ -1,6 +1,7 @@
 #include "card.h"
 
-Card::Card()
+Card::Card(QWidget *parent):
+    QWidget(parent)
 {
 
 }

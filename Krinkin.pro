@@ -24,10 +24,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    card.cpp
+    card.cpp \
+    authorisation.cpp \
+    table.cpp \
+    player.cpp \
+    screencontroller.cpp
 
-HEADERS  += mainwindow.h \
-    card.h
+HEADERS  += \
+    card.h \
+    authorisation.h \
+    table.h \
+    player.h \
+    screencontroller.h
 
-FORMS    += mainwindow.ui
+FORMS    += \
+    authorisation.ui \
+    table.ui
+
+DISTFILES += \
+    imgs/Снимок.PNG \
+    imgs/Снимок.PNG
+
+RESOURCES += \
+    imgs.qrc

@@ -1,22 +1,23 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef SCREENCONTROLLER_H
+#define SCREENCONTROLLER_H
 
-#include <QMainWindow>
+#include <QWidget>
+class Authorisation;
+class Table;
 
-namespace Ui {
-class MainWindow;
-}
-
-class MainWindow : public QMainWindow
+class ScreenController : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit ScreenController(QWidget *parent = 0);
 
-private:
-    Ui::MainWindow *ui;
+private slots:
+    void on2game(); //переносит нас к игре
+
+protected:
+    Authorisation *auth;   //авторизация игрока
+    Table *table;          //стол
 };
 
 #endif // MAINWINDOW_H

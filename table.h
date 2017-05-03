@@ -1,11 +1,18 @@
 #ifndef TABLE_H
 #define TABLE_H
-
-
-class Table
+#include <QWidget>
+namespace Ui {
+  class Table;
+}
+class Table : public QWidget
 {
+    Q_OBJECT
 public:
-    Table();
+    Table(QWidget *parent=0);
+    ~Table();
+
+private:
+  Ui::Table *ui;
 };
 
 #endif // TABLE_H
