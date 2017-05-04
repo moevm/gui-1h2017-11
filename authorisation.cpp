@@ -6,8 +6,11 @@ Authorisation::Authorisation(QWidget *parent):
 {
     ui->setupUi(this);
 
+
+
     connect(ui->PlayButton, SIGNAL(clicked()), SLOT(on_playClicked()));
     //connect(ui->helpButton, SIGNAL(clicked()), SLOT(on_helpClicked()));
+
 
 
 }
@@ -16,5 +19,8 @@ Authorisation::~Authorisation(){
     delete ui;
 }
 void Authorisation::on_playClicked() {
-  emit playClicked();
+    n=ui->textEdit->toPlainText();
+    ui->label_2->setText(n);
+
+    emit playClicked();
 }

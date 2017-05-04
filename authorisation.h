@@ -9,15 +9,19 @@ class Authorisation;
 class Authorisation : public QWidget
 {
     Q_OBJECT
+private:
+
 public:
     Authorisation(QWidget* parent = 0);
     ~Authorisation();
+    QString n;
 
 private slots:
-  void on_playClicked();
+    void on_playClicked();
+
 
 signals:
-  void playClicked();
+    void playClicked();
 protected:
     Ui::Authorisation *ui;
 };
