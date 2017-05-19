@@ -28,14 +28,18 @@ SOURCES += main.cpp\
     authorisation.cpp \
     table.cpp \
     player.cpp \
-    deck.cpp
+    deck.cpp \
+    human.cpp \
+    computer.cpp
 
 HEADERS  += \
     card.h \
     authorisation.h \
     table.h \
     player.h \
-    deck.h
+    deck.h \
+    human.h \
+    computer.h
 
 FORMS    += \
     authorisation.ui \
