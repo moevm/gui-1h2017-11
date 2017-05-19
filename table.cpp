@@ -22,7 +22,6 @@ void Table::getName(QString Name){
 
 void Table::sayHello(QString name)
 {
-    //ui->label->setText("Hello, "+name);
     ui->labelName->setText(name);
 }
 

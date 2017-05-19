@@ -90,15 +90,17 @@ border-radius: 80px;</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>60</y>
-       <width>120</width>
-       <height>80</height>
+       <y>80</y>
+       <width>131</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">background: url(:/imgs/chips/small/chip_biege_flat.png)</string>
+      <string notr="true">image: url(:/imgs/chips/small/chip_bigblind_flat.png);</string>
      </property>
     </widget>
+    <zorder>widget_3</zorder>
+    <zorder>widget_3</zorder>
    </widget>
    <widget class="QLabel" name="labelEli">
     <property name="geometry">

@@ -41,9 +41,6 @@ FORMS    += \
     authorisation.ui \
     table.ui
 
-DISTFILES += \
-    imgs/Снимок.PNG \
-    imgs/Снимок.PNG
 
 RESOURCES += \
     imgs.qrc

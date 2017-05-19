@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>imgs/Снимок.PNG</file>
         <file>imgs/card back black.png</file>
         <file>imgs/chips/small/chip_biege_flat.png</file>
         <file>imgs/chips/small/chip_biege_top.png</file>
@@ -82,6 +81,61 @@
         <file>imgs/cards/Set_A/small/card_a_sj.png</file>
         <file>imgs/cards/Set_A/small/card_a_sk.png</file>
         <file>imgs/cards/Set_A/small/card_a_sq.png</file>
-        <file>imgs/chips/BB.png</file>
+        <file>imgs/_grozIBXL3M.jpg</file>
+        <file>imgs/kartav1.jpg</file>
+        <file>imgs/kartav2.jpg</file>
+        <file>imgs/cards/set/10C.png</file>
+        <file>imgs/cards/set/10D.png</file>
+        <file>imgs/cards/set/10H.png</file>
+        <file>imgs/cards/set/10S.png</file>
+        <file>imgs/cards/set/2C.png</file>
+        <file>imgs/cards/set/2D.png</file>
+        <file>imgs/cards/set/2H.png</file>
+        <file>imgs/cards/set/2S.png</file>
+        <file>imgs/cards/set/3C.png</file>
+        <file>imgs/cards/set/3D.png</file>
+        <file>imgs/cards/set/3H.png</file>
+        <file>imgs/cards/set/3S.png</file>
+        <file>imgs/cards/set/4C.png</file>
+        <file>imgs/cards/set/4D.png</file>
+        <file>imgs/cards/set/4H.png</file>
+        <file>imgs/cards/set/4S.png</file>
+        <file>imgs/cards/set/5C.png</file>
+        <file>imgs/cards/set/5D.png</file>
+        <file>imgs/cards/set/5H.png</file>
+        <file>imgs/cards/set/5S.png</file>
+        <file>imgs/cards/set/6C.png</file>
+        <file>imgs/cards/set/6D.png</file>
+        <file>imgs/cards/set/6H.png</file>
+        <file>imgs/cards/set/6S.png</file>
+        <file>imgs/cards/set/7C.png</file>
+        <file>imgs/cards/set/7D.png</file>
+        <file>imgs/cards/set/7H.png</file>
+        <file>imgs/cards/set/7S.png</file>
+        <file>imgs/cards/set/8C.png</file>
+        <file>imgs/cards/set/8D.png</file>
+        <file>imgs/cards/set/8H.png</file>
+        <file>imgs/cards/set/8S.png</file>
+        <file>imgs/cards/set/9C.png</file>
+        <file>imgs/cards/set/9D.png</file>
+        <file>imgs/cards/set/9H.png</file>
+        <file>imgs/cards/set/9S.png</file>
+        <file>imgs/cards/set/AC.png</file>
+        <file>imgs/cards/set/AD.png</file>
+        <file>imgs/cards/set/AH.png</file>
+        <file>imgs/cards/set/AS.png</file>
+        <file>imgs/cards/set/JC.png</file>
+        <file>imgs/cards/set/JD.png</file>
+        <file>imgs/cards/set/JH.png</file>
+        <file>imgs/cards/set/JS.png</file>
+        <file>imgs/cards/set/KC.png</file>
+        <file>imgs/cards/set/KD.png</file>
+        <file>imgs/cards/set/KH.png</file>
+        <file>imgs/cards/set/KS.png</file>
+        <file>imgs/cards/set/QC.png</file>
+        <file>imgs/cards/set/QD.png</file>
+        <file>imgs/cards/set/QH.png</file>
+        <file>imgs/cards/set/QS.png</file>
+        <file>imgs/cards/set/Безымянный.png</file>
     </qresource>
 </RCC>
