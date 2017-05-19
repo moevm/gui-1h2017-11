@@ -8,7 +8,7 @@ class Player: public QWidget
 public:
     Player(QWidget *parent=0);
     int money;
-    //Card cards[2];
+    Card cards[2];
     int playing;
     int round;
     int goodToGo;

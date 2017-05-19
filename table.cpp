@@ -3,19 +3,34 @@
 
 Table::Table(QWidget *parent):
     QWidget(parent), ui(new Ui::Table) {
-    ui->setupUi(this);
-    QPixmap blind(":/imgs/chips/small/chip_bigblind_flat.png");
-    ui->labelEl->setPixmap(blind);
 
-    sayHello(name);
+    ui->setupUi(this);
+
 
 }
 
 Table::~Table() {
   delete ui;
 }
+void Table::getName(QString Name){
+    if(Name!=""||Name!=" ")
+
+        name=Name;
+     sayHello(name);
+}
+
 
 void Table::sayHello(QString name)
 {
-    ui->label->setText("Hello, "+name);
+    //ui->label->setText("Hello, "+name);
+    ui->labelName->setText(name);
+}
+
+void Table::startGame()
+{
+
+}
+void Table::evaluateHands()
+{
+
 }

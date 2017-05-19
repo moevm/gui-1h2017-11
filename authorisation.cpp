@@ -4,15 +4,8 @@
 Authorisation::Authorisation(QWidget *parent):
     QWidget(parent), ui(new Ui::Authorisation)
 {
-    ui->setupUi(this);
-
-
-
-    connect(ui->PlayButton, SIGNAL(clicked()), SLOT(on_playClicked()));
-    //connect(ui->helpButton, SIGNAL(clicked()), SLOT(on_helpClicked()));
-
-
-
+     ui->setupUi(this);
+     table=new Table(parent);
 }
 
 Authorisation::~Authorisation(){
@@ -20,7 +13,15 @@ Authorisation::~Authorisation(){
 }
 void Authorisation::on_playClicked() {
     n=ui->textEdit->toPlainText();
-    ui->label_2->setText(n);
+    //ui->label_2->setText(n);
 
     emit playClicked();
+}
+
+void Authorisation::on_PlayButton_clicked()
+{
+    table->getName(ui->textEdit->toPlainText());
+    table->show();
+    this->hide();
+
 }

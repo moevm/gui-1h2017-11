@@ -1,6 +1,7 @@
 #ifndef AUTHORISATION_H
 #define AUTHORISATION_H
 #include <QWidget>
+#include "table.h"
 
 namespace Ui {
 class Authorisation;
@@ -20,10 +21,13 @@ private slots:
     void on_playClicked();
 
 
+    void on_PlayButton_clicked();
+
 signals:
     void playClicked();
 protected:
     Ui::Authorisation *ui;
+    Table *table;
 };
 
 #endif // AUTHORISATION_H
