@@ -1,8 +1,12 @@
 #include "card.h"
 
-Card::Card(QWidget *parent):
-    QWidget(parent)
+Card::Card()
 {
     rank = 0;
     suit = 0;
 }
+/*
+void Card::showCard(QString cardname)
+{
+    //setStyleSheet("border-image:url(:/imgs/cards/set/10_C.png)");
+}*/

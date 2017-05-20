@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>1350</width>
     <height>700</height>
    </rect>
   </property>
@@ -22,7 +22,7 @@ color:rgb(255, 255, 255)</string>
     <rect>
      <x>-10</x>
      <y>30</y>
-     <width>1000</width>
+     <width>1350</width>
      <height>700</height>
     </rect>
    </property>
@@ -91,16 +91,14 @@ border-radius: 80px;</string>
       <rect>
        <x>20</x>
        <y>80</y>
-       <width>131</width>
-       <height>51</height>
+       <width>51</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">image: url(:/imgs/chips/small/chip_bigblind_flat.png);</string>
      </property>
     </widget>
-    <zorder>widget_3</zorder>
-    <zorder>widget_3</zorder>
    </widget>
    <widget class="QLabel" name="labelEli">
     <property name="geometry">
@@ -264,6 +262,24 @@ border-radius: 70px;
      </property>
      <property name="text">
       <string>БАНК</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="BankLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>80</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
      </property>
     </widget>
    </widget>
@@ -490,7 +506,7 @@ border-radius: 70px;
      </font>
     </property>
     <property name="text">
-     <string>1000$</string>
+     <string>KirillMoney</string>
     </property>
    </widget>
    <widget class="QLabel" name="MoneyEli">
@@ -508,7 +524,7 @@ border-radius: 70px;
      </font>
     </property>
     <property name="text">
-     <string>1000$</string>
+     <string>VladimirMoney</string>
     </property>
    </widget>
    <widget class="QLabel" name="PlayerMoney">
@@ -526,7 +542,7 @@ border-radius: 70px;
      </font>
     </property>
     <property name="text">
-     <string>1000$</string>
+     <string>playerMoney</string>
     </property>
    </widget>
    <widget class="QLabel" name="MoneyMax">
@@ -544,7 +560,99 @@ border-radius: 70px;
      </font>
     </property>
     <property name="text">
-     <string>1000$</string>
+     <string>AleksandrMoney</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ROUND</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>390</y>
+      <width>301</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>How much do you want to bet?</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="betEdit">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>460</y>
+      <width>291</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>1070</x>
+      <y>530</y>
+      <width>151</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft Tai Le</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background: rgb(2, 170, 165);
+border-radius: 6px;</string>
+    </property>
+    <property name="text">
+     <string>Make a bet</string>
     </property>
    </widget>
   </widget>

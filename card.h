@@ -1,14 +1,13 @@
 #ifndef CARD_H
 #define CARD_H
-#include <QWidget>
 
-class Card: public QWidget
+class Card
 {
-    Q_OBJECT
 public:
-    Card(QWidget* parent = 0);
+    Card();
     int rank;
     int suit;
+   // void showCard(QString cardname);
     //String img='';
 };
 

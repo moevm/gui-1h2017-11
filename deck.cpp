@@ -1,35 +1,36 @@
 #include "deck.h"
 #include"card.h"
-Deck::Deck(QWidget *parent):
-    QWidget(parent)
-{
 
+Deck::Deck()
+{
     for (int i = 0; i<4; i++)
     {
         for (int j = 0; j<13; j++)
         {
-            cards[i * 13 + j].suit = i;
-            cards[i * 13 + j].rank = j;
+            Card card;
+            card.suit=i;
+            card.rank=j;
+            cards.push_back(card);
         }
     }
-    suits[0] = 'D';
-    suits[1] = 'S';
-    suits[2] = 'H';
-    suits[3] = 'C';
+    suits.push_back("D");
+    suits.push_back("S");
+    suits.push_back("H");
+    suits.push_back("C");
 
-    ranks[0] = '2';
-    ranks[1] = '3';
-    ranks[2] = '4';
-    ranks[3] = '5';
-    ranks[4] = '6';
-    ranks[5] = '7';
-    ranks[6] = '8';
-    ranks[7] = '9';
-    ranks[8] = 'T';
-    ranks[9] = 'J';
-    ranks[10] = 'Q';
-    ranks[11] = 'K';
-    ranks[12] = 'A';
+    ranks.push_back("2");
+    ranks.push_back("3");
+    ranks.push_back("4");
+    ranks.push_back("5");
+    ranks.push_back("6");
+    ranks.push_back("7");
+    ranks.push_back("8");
+    ranks.push_back("9");
+    ranks.push_back("10");
+    ranks.push_back("J");
+    ranks.push_back("Q");
+    ranks.push_back("K");
+    ranks.push_back("A");
     top = 51;
 }
 
@@ -50,13 +51,13 @@ void Deck::shuffle()
     for (int i = 0; i<52; i++)
     {
         x = rand() % 52;
-        //tempCard = cards[i];
-        //cards[i] = cards[x];
-        //cards[x] = tempCard;
+        tempCard = cards[i];
+        cards[i] = cards[x];
+        cards[x] = tempCard;
     }
 }
 Card Deck::hitme()
 {
-    //top--;
-    //return cards[top + 1];
+    top--;
+    return cards[top + 1];
 }

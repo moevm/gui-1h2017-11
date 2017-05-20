@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     player.cpp \
     deck.cpp \
     human.cpp \
-    computer.cpp
+    computer.cpp \
+    gameover.cpp
 
 HEADERS  += \
     card.h \
@@ -39,11 +40,13 @@ HEADERS  += \
     player.h \
     deck.h \
     human.h \
-    computer.h
+    computer.h \
+    gameover.h
 
 FORMS    += \
     authorisation.ui \
-    table.ui
+    table.ui \
+    gameover.ui
 
 
 RESOURCES += \

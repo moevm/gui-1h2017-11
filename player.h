@@ -1,17 +1,24 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "card.h"
-#include <QWidget>
-class Player: public QWidget
+class Card;
+
+#include "QVector"
+class Player
 {
-    Q_OBJECT
 public:
-    Player(QWidget *parent=0);
+    Player();
+    ~Player();
     int money;
-    Card cards[2];
+    QVector <Card> playerCards;
     int playing;
     int round;
     int goodToGo;
+    void setGTG(int j);
+    virtual void mainAction(){}
+    void setCards(Card c1, Card c2);
+
+
 
 };
 

@@ -1,23 +1,22 @@
 #ifndef DECK_H
 #define DECK_H
+#include "QVector"
+#include "QString"
+class Card;
 
-#include "card.h"
-#include <QWidget>
-
-class Deck: public QWidget
+class Deck
 {
-    Q_OBJECT
-public:
-    Deck(QWidget *parent=0);
+
 private:
-    Card cards[52];
+    QVector <Card> cards;
 
 public:
-    Card hitme();
-    char suits[4];
-    char ranks[13];
-    int top;
     Deck();
+    Card hitme();
+    QVector <QString> suits;
+    QVector <QString> ranks;
+    int top;
+
     void shuffle();
 };
 

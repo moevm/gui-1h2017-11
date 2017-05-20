@@ -1,11 +1,18 @@
 #ifndef TABLE_H
 #define TABLE_H
 #include <QWidget>
+#include <QMatrix>
 #include "card.h"
 #include "deck.h"
+#include "human.h"
+#include "gameover.h"
+
+
 class Deck;
 class Card;
-class Player;
+class Human;
+class Computer;
+class GameOver;
 
 namespace Ui {
   class Table;
@@ -18,40 +25,51 @@ public:
     Table(QWidget *parent=0);
     ~Table();
     QString name="player";
+    Human human;
+    QVector <Computer> comp;
+    Deck deck1;
+    Card tableCards[5];
+
+    int bind;
+    int pot;
+    int betOn;
+    int action;
+    int bet;
+    int rational;
+
+    QVector <int> handPoints;
+    int bestHand[6][3];
+
     void sayHello(QString name);
     void getName(QString);
+    void getBet();
+    void showCard(QString cardN);
+    int takeBets();
+    int playersToBet();
 
+
+
+    void startGame();
     void deal();
     void flop();
     void turn();
     void river();
-
-    //Deck deck1;
-    int bind;
-    Card tableCards[5];
-    int pot, action, bet, rational, betOn, winner, maxPoints, roundWinner;
-    int handPoints[6];
-    int bestHand[6][3];
+   
     int playersLeft();
-    int computerAction(int playerNum);
-    /*checks if someone still got bet/call*/
-    int playersToBet();
-    int takeBets();
-    int oneLeft();
-    int getWinner();
-    int getScore(Card hand[]);
-    int tryHand(int array[], int player);
-    void evaluateHands();
-    void startGame();
-    void SMS(int k, int &money)
-    {
-        pot = pot + k;
-        money = money - k;
-    }
 
+
+private slots:
+    void on_FlopButton_clicked();
+
+    void on_CallButton_clicked();
+
+    void on_CheckButton_clicked();
 
 private:
   Ui::Table *ui;
+protected:
+  GameOver *gameover;
+
 
 };
 
