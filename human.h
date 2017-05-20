@@ -10,7 +10,6 @@ class Human : public Player
 
 public:
     Human();
-    void mainAction(int &act, int betOn);
 };
 
 #endif // HUMAN_H

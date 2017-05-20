@@ -98,7 +98,7 @@ void Table::deal()
 int Table::playersToBet()
 {
     for (int i = 0; i < 3; i++)
-        if (comp[i].round == 1 && comp[i].goodToGo == 0)
+        if (comp.at(i).round == 1 && comp.at(i).goodToGo == 0)
             return 1;
     if (human.round == 1 && human.goodToGo == 0)
         return 1;
@@ -113,9 +113,9 @@ int Table::takeBets()
         comp[k].goodToGo = 0;
     human.goodToGo = 0;
 
-   /* for (int k = bind + 1; k < bind + 5; k++)
+    for (int k = bind + 1; k < bind + 5; k++)
     {
-        int count1 = 0;
+        int count1 = 0; // count of players in current round
         for (int g = bind + 1; g < bind + 5; g++)
         {
             if (g == 3)
@@ -124,17 +124,29 @@ int Table::takeBets()
                     count1++;
             }
             else
-                if (comp.at(g).playing)
+                if (comp[g].playing)
                         count1++;
         }
         if (count1 == 1)
-            return 0;
+            return 0;    //left one player - winner
 
-        if (k % 4 == 3)
+        if (k % 4 == 3)  //if this player - human
         {
-            if (human.round)
+            if (human.round)  //he doesn't check
             {
-                human.mainAction(action, betOn);
+                //human.mainAction(action, betOn);
+                if (betOn)
+                {
+                    ui->FlopButton->setEnabled(true);
+                    ui->CallButton->setEnabled(true);
+                }
+                else
+                {
+                    ui->FlopButton->setEnabled(true);
+                    ui->CheckButton->setEnabled(true);
+                    ui->CallButton->setEnabled(true);
+
+                }
                 if (action == 1)
                 {
                     human.round = 0;
@@ -155,10 +167,7 @@ int Table::takeBets()
                         else
                         {
                             ui->pushButton->setEnabled(true);
-                            while (bet > human.money || bet < 1)
-                            {
 
-                            }
                             pot += bet;
                             ui->BankLabel->setText(QString :: number(pot));
                             human.money -= bet;
@@ -169,9 +178,9 @@ int Table::takeBets()
                 }
             }
         }
-        else
+        else //player - comp
         {
-            if (comp[k % 4].round == 0)
+            if (comp.at(k%4).round == 0)
                 continue;
             rational = rand() % 2;
             if (rational)
@@ -185,36 +194,46 @@ int Table::takeBets()
             if (action == 0)
             {
                 comp[k % 4].round = 0;
+                //cout << (comp[k % 6]).name << " flops..."
              }
             else if (action == 1 && betOn == 0)
             {
-                        //std::cout << (comp[k % 4]).name << " checks." << endl << endl;
+                if (k%4 == 0) ui->MoneyCarl->setText("checks");
+                if (k%4 == 1) ui->MoneyEli->setText("checks");
+                if (k%4 == 2) ui->MoneyMax->setText("checks");
+                //std::cout << (comp[k % 4]).name << " checks." << endl << endl;
                 continue;
             }
             else
             {
-                if ((betOn) && (comp[k%4].round))
+                if ((betOn) && (comp.at(k%4).round))
                 {
                     pot += betOn;
                     ui->BankLabel->setText(QString :: number(pot));
                     comp[k % 4].money -= betOn;
-                           // cout << (comp[k % 4]).name << " calls!" << endl << endl;
+                    if (k%4 == 0) ui->MoneyCarl->setText(QString::number(comp.at(k%4).money));
+                    if (k%4 == 1) ui->MoneyEli->setText(QString::number(comp.at(k%4).money));
+                    if (k%4 == 2) ui->MoneyMax->setText(QString::number(comp.at(k%4).money));
+                    // cout << (comp[k % 4]).name << " calls!" << endl << endl;
                     comp[k % 4].goodToGo = 1;
                 }
                 else
                 {
-                    bet = (rand() % (comp[k % 4].money / 3) + 10);
+                    bet = (rand() % (comp.at(k%4).money / 3) + 10);
                     pot += bet;
                     ui->BankLabel->setText(QString :: number(pot));
                     comp[k % 4].money -= bet;
-                          //  cout << comp[k % 4].name << " bets " << bet << endl << endl;
+                    if (k%4 == 0) ui->MoneyCarl->setText(QString::number(comp.at(k%4).money));
+                    if (k%4 == 1) ui->MoneyEli->setText(QString::number(comp.at(k%4).money));
+                    if (k%4 == 2) ui->MoneyMax->setText(QString::number(comp.at(k%4).money));
+                    //  cout << comp[k % 4].name << " bets " << bet << endl << endl;
                     betOn = bet;
                    comp[k % 4].goodToGo = 1;
                 }
             }
         }
     }
-    if (betOn&&playersToBet())
+    if (betOn&& playersToBet())
     {
         for (int k = bind + 1; k<bind + 5; k++)
         {
@@ -222,15 +241,9 @@ int Table::takeBets()
             {
                 if (human.round&&human.goodToGo == 0)
                 {
-                      //  std::cout << "Your action: (1) FLOP (3) BET/CALL ";
-                      //  std::cin >> action;
-                    while (action != 1 && action != 3)
-                    {
-                          //  std::cout << "Invalid number pressed." << endl;
-                          //  std::cout << "Your action: (1) FLOP (3) BET/CALL ";
-                          //  std::cin >> action;
-                          //  std::cout << endl << endl;
-                    }
+                    ui->FlopButton->setEnabled(true);
+                    ui->CallButton->setEnabled(true);
+
                     if (action == 1)
                         human.round = 0;
                     else
@@ -243,7 +256,7 @@ int Table::takeBets()
             }
             else
             {
-                if ((comp[k % 4]).round == 0 || (comp[k % 4]).goodToGo == 1)
+                if (comp.at(k%4).round == 0 || comp.at(k%4).goodToGo == 1)
                     continue;
                 action = rand() % 2;
                 if (action == 0)
@@ -262,7 +275,7 @@ int Table::takeBets()
                 }
             }
         }
-    }*/
+    }
     return 0;
 }
 
@@ -393,16 +406,16 @@ void Table::startGame()
         deal();
 
 
-        ui->MoneyCarl->setNum(comp[0].money);
-        ui->MoneyEli->setNum(comp[1].money);
-        ui->MoneyMax->setNum(comp[2].money);
+        ui->MoneyCarl->setNum(comp.at(0).money);
+        ui->MoneyEli->setNum(comp.at(1).money);
+        ui->MoneyMax->setNum(comp.at(2).money);
         ui->PlayerMoney->setNum(human.money);
         QString cardN1;
         QString cardN2;
-        if (human.playerCards[0].rank>=0 && human.playerCards[0].suit>=0)
-             cardN1=deck1.ranks[human.playerCards[0].rank]+deck1.suits[human.playerCards[0].suit];
-        if (human.playerCards[1].rank>=0 && human.playerCards[1].suit>=0)
-             cardN2=deck1.ranks[human.playerCards[1].rank]+deck1.suits[human.playerCards[1].suit];
+        if (human.playerCards.at(0).rank>=0 && human.playerCards.at(0).suit>=0)
+             cardN1=deck1.ranks.at(human.playerCards.at(0).rank)+deck1.suits.at(human.playerCards.at(0).suit);
+        if (human.playerCards.at(1).rank>=0 && human.playerCards.at(1).suit>=0)
+             cardN2=deck1.ranks.at(human.playerCards.at(1).rank)+deck1.suits.at(human.playerCards.at(1).suit);
         ui->PlayerCard1->setStyleSheet("border-image: url(:/imgs/cards/set/"+cardN1+".png)");
         ui->PlayerCard2->setStyleSheet("border-image: url(:/imgs/cards/set/"+cardN2+".png)");
 
@@ -419,15 +432,20 @@ void Table::startGame()
 
 void Table::on_FlopButton_clicked()
 {
-
+    action = 1;
 }
 
 void Table::on_CallButton_clicked()
 {
-
+    action = 3;
 }
 
 void Table::on_CheckButton_clicked()
 {
+    action = 2;
+}
 
+void Table::on_pushButton_clicked()
+{
+    bet = ui->betEdit->toPlainText().toInt();
 }

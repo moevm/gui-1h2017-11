@@ -65,6 +65,8 @@ private slots:
 
     void on_CheckButton_clicked();
 
+    void on_pushButton_clicked();
+
 private:
   Ui::Table *ui;
 protected:
