@@ -11,16 +11,19 @@ Table::Table(QWidget *parent):
     c.money = 1000;
     c.goodToGo= 0;
     c.playing = 1;
+    c.round=0;
     Card car;
     car.rank=0;
     car.suit=0;
     c.playerCards.push_back(car);
     c.playerCards.push_back(car);
+
     for (int i=0; i<3; i++)
         comp.push_back(c);
     human.money=1000;
     human.goodToGo =0;
     human.playing=1;
+    human.round=0;
     human.setCards(car, car);
     pot =20;
 
@@ -39,15 +42,9 @@ Table::~Table() {
 }
 void Table::getName(QString Name){
     if(Name!=""||Name!=" ")
-
         name=Name;
      sayHello(name);
 }
- void Table::getBet()
- {
-     bet = ui->betEdit->toPlainText().toInt();
- }
-
 
 void Table::sayHello(QString name)
 {
@@ -108,11 +105,12 @@ int Table::playersToBet()
 
 int Table::takeBets()
 {
-    betOn = 0;
+    betOn = 0; //nobody make a bet yet
     for (int k = 0; k<3; k++)
         comp[k].goodToGo = 0;
     human.goodToGo = 0;
 
+    //everyone can do his ход from bb+1
     for (int k = bind + 1; k < bind + 5; k++)
     {
         int count1 = 0; // count of players in current round
@@ -124,7 +122,15 @@ int Table::takeBets()
                     count1++;
             }
             else
-                if (comp[g].playing)
+                if (g==4)
+                {
+                    g=0;
+                    if (comp[g].playing)
+                        count1++;
+                    g=4;
+                }
+                else
+                    if (comp[g].playing)
                         count1++;
         }
         if (count1 == 1)
@@ -135,29 +141,30 @@ int Table::takeBets()
             if (human.round)  //he doesn't check
             {
                 //human.mainAction(action, betOn);
-                if (betOn)
+                if (betOn)  // if someone has made a bet then FLopButton & CallButton are active
                 {
                     ui->FlopButton->setEnabled(true);
                     ui->CallButton->setEnabled(true);
                 }
                 else
-                {
+                {   //all buttons are active
                     ui->FlopButton->setEnabled(true);
                     ui->CheckButton->setEnabled(true);
                     ui->CallButton->setEnabled(true);
 
                 }
+                //if Flop then human is out of game
                 if (action == 1)
                 {
                     human.round = 0;
                 }
                 else
-                {
+                {// if Check then we go on
                     if (action == 2)
                         continue;
                     else
                     {
-                        if (betOn)
+                        if (betOn)  //if someone has made a bet
                         {
                             pot += betOn;
                             human.money -= betOn;
@@ -233,13 +240,13 @@ int Table::takeBets()
             }
         }
     }
-    if (betOn&& playersToBet())
+    if (betOn && playersToBet())
     {
         for (int k = bind + 1; k<bind + 5; k++)
         {
-            if (k % 4 == 3)
+            if (k % 4 == 3) //if human
             {
-                if (human.round&&human.goodToGo == 0)
+                if (human.round == 0 && human.goodToGo == 0)
                 {
                     ui->FlopButton->setEnabled(true);
                     ui->CallButton->setEnabled(true);
@@ -254,7 +261,7 @@ int Table::takeBets()
                     }
                 }
             }
-            else
+            else  //if comp
             {
                 if (comp.at(k%4).round == 0 || comp.at(k%4).goodToGo == 1)
                     continue;
@@ -296,16 +303,16 @@ void Table::startGame()
         {
             if (comp.at(z).money<1)
             {
-               /* Computer c;
+                Computer c;
                 c.playing=0;
                 c.round = 0;
                 c.money = comp.at(z).money;
                 c.goodToGo = comp.at(z).goodToGo;
                 c.playerCards = comp.at(z).playerCards;
 
-                comp.value(z, c);*/
-                comp[z].round=0;
-                comp[z].playing=0;
+                comp.value(z, c);
+                //comp[z].round=0;
+                //comp[z].playing=0;
             }
         }
         if (human.money<1)
@@ -316,7 +323,7 @@ void Table::startGame()
 
         for (int z=0; z<4; z++)
         {
-            if (z!=3)
+            if (z!=3)//not human
             {
                 if (comp.at(z).playing)
                 {
@@ -419,7 +426,7 @@ void Table::startGame()
         ui->PlayerCard1->setStyleSheet("border-image: url(:/imgs/cards/set/"+cardN1+".png)");
         ui->PlayerCard2->setStyleSheet("border-image: url(:/imgs/cards/set/"+cardN2+".png)");
 
-        takeBets();
+       takeBets();
 
 
   //      i++;
@@ -429,7 +436,122 @@ void Table::startGame()
 
 }
 
+int Table::oneLeft()   //if left one return 1
+{
+    int count = 0;
+    for (int k = 0; k<3; k++)
+        if (comp.at(k).round)
+            count++;
+    if (human.round)
+        count++;
 
+    if (count == 1)
+        return 1;
+    else
+        return 0;
+}
+
+int Table::getWinner()
+{
+    int winner;
+    for (int k = 0; k<3; k++)
+        if (comp.at(k).round)
+            winner = k;
+    if (human.round)
+        winner = 3;
+    return winner;
+}
+int compareCards(const void *card1, const void *card2)
+{
+    return (*(Card *)card1).rank - (*(Card *)card2).rank;
+}
+
+int Table::getScore(Card hand[])    //определяет очки комбинации
+{
+    qsort(hand, 5, sizeof(Card), compareCards);
+    int straight, flush, three, four, full, pairs, high;
+    int k;
+
+    straight = flush = three = four = full = pairs = high = 0;
+    k = 0;
+
+    /*checks for flush*/
+    while (k<4 && hand[k].suit == hand[k + 1].suit)
+        k++;
+    if (k == 4)
+        flush = 1;
+
+    /* checks for straight*/
+    k = 0;
+    while (k<4 && hand[k].rank == hand[k + 1].rank - 1)
+        k++;
+    if (k == 4)
+        straight = 1;
+
+    /* checks for fours */
+    for (int i = 0; i<2; i++) {
+        k = i;
+        while (k<i + 3 && hand[k].rank == hand[k + 1].rank)
+            k++;
+        if (k == i + 3) {
+            four = 1;
+            high = hand[i].rank;
+        }
+    }
+
+    /*checks for threes and fullhouse*/
+    if (!four) {
+        for (int i = 0; i<3; i++) {
+            k = i;
+            while (k<i + 2 && hand[k].rank == hand[k + 1].rank)
+                k++;
+            if (k == i + 2) {
+                three = 1;
+                high = hand[i].rank;
+                if (i == 0) {
+                    if (hand[3].rank == hand[4].rank)
+                        full = 1;
+                }
+                else if (i == 1) {
+                    if (hand[0].rank == hand[4].rank)
+                        full = 1;
+                }
+                else {
+                    if (hand[0].rank == hand[1].rank)
+                        full = 1;
+                }
+            }
+        }
+    }
+
+    if (straight&&flush)
+        return 170 + hand[4].rank;
+    else if (four)
+        return 150 + high;
+    else if (full)
+        return 130 + high;
+    else if (flush)
+        return 110;
+    else if (straight)
+        return 90 + hand[4].rank;
+    else if (three)
+        return 70 + high;
+
+    /* checks for pairs*/
+    for (k = 0; k<4; k++)
+        if (hand[k].rank == hand[k + 1].rank) {
+            pairs++;
+            if (hand[k].rank>high)
+                high = hand[k].rank;
+        }
+
+    if (pairs == 2)
+        return 50 + high;
+    else if (pairs)
+        return 30 + high;
+    else
+        return hand[4].rank;
+}
 void Table::on_FlopButton_clicked()
 {
     action = 1;

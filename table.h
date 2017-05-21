@@ -42,10 +42,12 @@ public:
 
     void sayHello(QString name);
     void getName(QString);
-    void getBet();
     void showCard(QString cardN);
     int takeBets();
     int playersToBet();
+    int oneLeft();
+    int getWinner();
+    int getScore(Card hand[]);
 
 
 
