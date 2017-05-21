@@ -3,6 +3,8 @@
 #include <QStyle>
 #include "human.h"
 #include "computer.h"
+#include "stdio.h"
+
 
 Table::Table(QWidget *parent):
     QWidget(parent), ui(new Ui::Table) {
@@ -17,6 +19,13 @@ Table::Table(QWidget *parent):
     car.suit=0;
     c.playerCards.push_back(car);
     c.playerCards.push_back(car);
+    //tableCards[0]=car;
+    //tableCards[1]=car;
+    for (int i=0; i<5; i++)
+    {
+        tableCards[i].rank=0;
+        tableCards[i].suit=0;
+    }
 
     for (int i=0; i<3; i++)
         comp.push_back(c);
@@ -31,6 +40,13 @@ Table::Table(QWidget *parent):
     ui->setupUi(this);
     ui->BankLabel->setText(QString::number(pot));
     gameover=new GameOver(parent);
+
+    ui->CheckButton->setEnabled(false);
+    ui->FlopButton->setEnabled(false);
+    ui->CallButton->setEnabled(false);
+    ui->pushButton->setEnabled(false);
+
+    //sleep(10);
 
     startGame();
 
@@ -102,6 +118,20 @@ int Table::playersToBet()
     return 0;
 }
 
+void Table::turn()
+{
+    tableCards[3] = deck1.hitme();     //выкладывается четвертая карты на стол
+}
+
+void Table::river()
+{
+    tableCards[4] = deck1.hitme();     //выкладывается последняя карты на стол
+}
+void Table::flop()
+{
+    for (int i = 0; i<3; i++)
+        tableCards[i] = deck1.hitme();    //выкладываются 3 карты на стол
+}
 
 int Table::takeBets()
 {
@@ -288,31 +318,17 @@ int Table::takeBets()
 
 void Table::startGame()
 {
-    ui->CheckButton->setEnabled(false);
-    ui->FlopButton->setEnabled(false);
-    ui->CallButton->setEnabled(false);
-    ui->pushButton->setEnabled(false);
-
-
     int i = 0;
-  //  while (this->playersLeft()>1)
-   // {
+    while (this->playersLeft()>1)
+    {
         bind = i % 4;
         /* starting default values*/
         for (int z = 0; z<3; z++)
         {
             if (comp.at(z).money<1)
             {
-                Computer c;
-                c.playing=0;
-                c.round = 0;
-                c.money = comp.at(z).money;
-                c.goodToGo = comp.at(z).goodToGo;
-                c.playerCards = comp.at(z).playerCards;
-
-                comp.value(z, c);
-                //comp[z].round=0;
-                //comp[z].playing=0;
+                comp[z].round=0;
+                comp[z].playing=0;
             }
         }
         if (human.money<1)
@@ -327,14 +343,6 @@ void Table::startGame()
             {
                 if (comp.at(z).playing)
                 {
-                   /* Computer c ;
-                    c.goodToGo = comp.at(z).goodToGo;
-                    c.money = comp.at(z).money;
-                    c.playerCards = comp.at(z).playerCards;
-                    c.playing = comp.at(z).playing;
-                    c.round = 1;
-
-                    comp.value(z,c);*/
                     comp[z].round=1;
                 }
 
@@ -374,29 +382,10 @@ void Table::startGame()
         {
             if (comp.at(bind).money >= 20)
             {
-                /*Computer c ;
-
-                c.goodToGo = comp.at(bind).goodToGo;
-                c.money = comp.at(bind).money;
-                c.money -= 20;
-                c.playerCards = comp.at(bind).playerCards;
-                c.playing = comp.at(bind).playing;
-                c.round = comp.at(bind).round;
-
-                comp.value(bind,c);*/
                 comp[bind].money-=20;
             }
             else
             {
-               /* Computer c ;
-
-                c.goodToGo = comp.at(bind).goodToGo;
-                c.money = comp.at(bind).money;
-                c.playerCards = comp.at(bind).playerCards;
-                c.playing = 0;
-                c.round = comp.at(bind).round;
-
-                comp.value(bind,c);*/
                 comp[bind].playing=0;
             }
         }
@@ -428,11 +417,138 @@ void Table::startGame()
 
        takeBets();
 
+       if (oneLeft())
+       {
+           winner = getWinner();
+           if (winner!=3)
+           {
+               if (winner==0) ui->labelWinner->setText("Kirill");
+               if (winner ==1) ui->labelWinner->setText("Vladimir");
+               if (winner==2) ui->labelWinner->setText("Aleksandr");
+               ui->labelPot->setText("wins "+QString::number(pot)+"!!! Yay C:");
+           }
+           else
+               ui->labelWinner->setText(name);
+           i++;
+           //continue;
+       }
 
-  //      i++;
-   // }
+       /* flop */
+       flop();
+       takeBets();
+       if (oneLeft())
+       {
+           winner = getWinner();
+           if (winner!=3)
+           {
+               if (winner==0) ui->labelWinner->setText("Kirill");
+               if (winner ==1) ui->labelWinner->setText("Vladimir");
+               if (winner==2) ui->labelWinner->setText("Aleksandr");
+               ui->labelPot->setText("wins "+QString::number(pot)+"!!! Yay C:");
+           }
+           else
+               ui->labelWinner->setText(name);
+           i++;
+           //continue
+       }
+
+       /* turn */
+       turn();
+       takeBets();
+       if (oneLeft())
+       {
+           winner = getWinner();
+           if (winner!=3)
+           {
+               if (winner==0) ui->labelWinner->setText("Kirill");
+               if (winner ==1) ui->labelWinner->setText("Vladimir");
+               if (winner==2) ui->labelWinner->setText("Aleksandr");
+               ui->labelPot->setText("wins $ "+QString::number(pot)+"!!! Yay C:");
+           }
+           else
+               ui->labelWinner->setText(name);
+           i++;
+           //continue
+       }
+
+       /* river */
+       river();
+       takeBets();
 
 
+       evaluateHands();
+       /*find and declare round winner*/
+       maxPoints = 0;
+       for (int q = 0; q<4; q++)
+       {
+           if (q != 3)
+           {
+               if (comp.at(q).round)
+               {
+                   if (handPoints[q] > maxPoints)
+                   {
+                       maxPoints = handPoints[q];
+                       roundWinner = q;
+                   }
+               }
+           }
+           else
+           {
+               if (human.round)
+               {
+                   if (handPoints[q] > maxPoints)
+                   {
+                       maxPoints = handPoints[q];
+                       roundWinner = q;
+                   }
+               }
+           }
+       }
+           //    std::cout << endl;
+       if (roundWinner != 3)
+       {
+           if (roundWinner==0) ui->labelWinner->setText("Kirill");
+           if (roundWinner ==1) ui->labelWinner->setText("Vladimir");
+           if (roundWinner==2) ui->labelWinner->setText("Aleksandr");
+           ui->labelPot->setText("wins $ "+QString::number(pot)+"!!! Yay C:");
+           // std::cout << (comp[roundWinner]).name << " wins $" << pot << " with ";
+       }
+       else
+       {
+          ui->labelWinner->setText(name);
+          ui->labelPot->setText("wins $ "+QString::number(pot)+"!!! Yay C:");
+          // std::cout << (*human).name << " wins $" << pot << " with ";
+       }
+       if (maxPoints<30)
+           ui->label_5->setText("HIGH CARD");
+       else if (maxPoints<50)
+           ui->label_5->setText("SINGLE PAIR");
+       else if (maxPoints<70)
+           ui->label_5->setText("TWO PAIRS");
+       else if (maxPoints<90)
+           ui->label_5->setText("THREE OF A KIND");
+       else if (maxPoints<110)
+           ui->label_5->setText("STRAIGHT");
+       else if (maxPoints<130)
+           ui->label_5->setText("FLUSH");
+       else if (maxPoints<150)
+           ui->label_5->setText("FULL HOUSE");
+       else if (maxPoints<170)
+           ui->label_5->setText("FOUR OF A KIND");
+       else
+           ui->label_5->setText("STRAIGHT FLUSH");
+
+
+       if (roundWinner==3)
+           human.money += pot;
+       else
+           comp[roundWinner].money += pot;
+
+       i++;
+    }
+}
+void Table::evaluateHands()
+{
 
 }
 

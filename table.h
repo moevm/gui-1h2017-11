@@ -36,6 +36,9 @@ public:
     int action;
     int bet;
     int rational;
+    int winner;
+    int maxPoints;
+    int roundWinner;
 
     QVector <int> handPoints;
     int bestHand[6][3];
@@ -43,19 +46,22 @@ public:
     void sayHello(QString name);
     void getName(QString);
     void showCard(QString cardN);
+    void flop();
+    void turn();
+    void river();
     int takeBets();
     int playersToBet();
     int oneLeft();
     int getWinner();
     int getScore(Card hand[]);
+    void evaluateHands();
+
 
 
 
     void startGame();
     void deal();
-    void flop();
-    void turn();
-    void river();
+
    
     int playersLeft();
 
