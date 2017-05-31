@@ -631,7 +631,7 @@ border-radius: 70px;
 color: rgb(0, 0, 0);</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="betButton">
     <property name="geometry">
      <rect>
       <x>1070</x>
@@ -696,8 +696,8 @@ border-radius: 6px;</string>
      <rect>
       <x>1060</x>
       <y>220</y>
-      <width>121</width>
-      <height>51</height>
+      <width>281</width>
+      <height>131</height>
      </rect>
     </property>
     <property name="font">

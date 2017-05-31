@@ -55,6 +55,7 @@ public:
     int getWinner();
     int getScore(Card hand[]);
     void evaluateHands();
+    int tryHand(int array[], int player);
 
 
 
@@ -74,6 +75,8 @@ private slots:
     void on_CheckButton_clicked();
 
     void on_pushButton_clicked();
+
+    void on_betButton_clicked();
 
 private:
   Ui::Table *ui;

@@ -4,7 +4,8 @@
 #include "human.h"
 #include "computer.h"
 #include "stdio.h"
-
+#include "windows.h"
+//#include "computer.h"
 
 Table::Table(QWidget *parent):
     QWidget(parent), ui(new Ui::Table) {
@@ -44,9 +45,9 @@ Table::Table(QWidget *parent):
     ui->CheckButton->setEnabled(false);
     ui->FlopButton->setEnabled(false);
     ui->CallButton->setEnabled(false);
-    ui->pushButton->setEnabled(false);
+    ui->betButton->setEnabled(false);
 
-    //sleep(10);
+    //sleep(10000);
 
     startGame();
 
@@ -57,7 +58,7 @@ Table::~Table() {
   delete ui;
 }
 void Table::getName(QString Name){
-    if(Name!=""||Name!=" ")
+    //if(Name!=""||Name!=" ")
         name=Name;
      sayHello(name);
 }
@@ -121,16 +122,23 @@ int Table::playersToBet()
 void Table::turn()
 {
     tableCards[3] = deck1.hitme();     //выкладывается четвертая карты на стол
+    ui->TableCard4->setStyleSheet("border-image: url(:/imgs/cards/set/"+deck1.ranks.at(tableCards[3].rank)+deck1.suits.at(tableCards[3].suit)+".png)");
 }
 
 void Table::river()
 {
     tableCards[4] = deck1.hitme();     //выкладывается последняя карты на стол
+    ui->TableCard5->setStyleSheet("border-image: url(:/imgs/cards/set/"+deck1.ranks.at(tableCards[2].rank)+deck1.suits.at(tableCards[2].suit)+".png)");
+
 }
 void Table::flop()
 {
     for (int i = 0; i<3; i++)
         tableCards[i] = deck1.hitme();    //выкладываются 3 карты на стол
+    ui->TableCard1->setStyleSheet("border-image: url(:/imgs/cards/set/"+deck1.ranks.at(tableCards[0].rank)+deck1.suits.at(tableCards[0].suit)+".png)");
+    ui->TableCard2->setStyleSheet("border-image: url(:/imgs/cards/set/"+deck1.ranks.at(tableCards[1].rank)+deck1.suits.at(tableCards[1].suit)+".png)");
+    ui->TableCard3->setStyleSheet("border-image: url(:/imgs/cards/set/"+deck1.ranks.at(tableCards[2].rank)+deck1.suits.at(tableCards[2].suit)+".png)");
+
 }
 
 int Table::takeBets()
@@ -203,9 +211,10 @@ int Table::takeBets()
                         }
                         else
                         {
-                            ui->pushButton->setEnabled(true);
+                            ui->betButton->setEnabled(true);
 
                             pot += bet;
+                           // sleep();
                             ui->BankLabel->setText(QString :: number(pot));
                             human.money -= bet;
                             betOn = bet;
@@ -319,8 +328,8 @@ int Table::takeBets()
 void Table::startGame()
 {
     int i = 0;
-    while (this->playersLeft()>1)
-    {
+  //  while (this->playersLeft()>1)
+  //  {
         bind = i % 4;
         /* starting default values*/
         for (int z = 0; z<3; z++)
@@ -447,7 +456,11 @@ void Table::startGame()
                ui->labelPot->setText("wins "+QString::number(pot)+"!!! Yay C:");
            }
            else
+           {
                ui->labelWinner->setText(name);
+               ui->labelPot->setText("wins "+QString::number(pot)+"!!! Yay C:");
+              // ui->betButton->setEnabled(true);
+           }
            i++;
            //continue
        }
@@ -466,7 +479,10 @@ void Table::startGame()
                ui->labelPot->setText("wins $ "+QString::number(pot)+"!!! Yay C:");
            }
            else
+           {
                ui->labelWinner->setText(name);
+               ui->labelPot->setText("wins "+QString::number(pot)+"!!! Yay C:");
+           }
            i++;
            //continue
        }
@@ -511,7 +527,7 @@ void Table::startGame()
            if (roundWinner ==1) ui->labelWinner->setText("Vladimir");
            if (roundWinner==2) ui->labelWinner->setText("Aleksandr");
            ui->labelPot->setText("wins $ "+QString::number(pot)+"!!! Yay C:");
-           // std::cout << (comp[roundWinner]).name << " wins $" << pot << " with ";
+
        }
        else
        {
@@ -545,10 +561,103 @@ void Table::startGame()
            comp[roundWinner].money += pot;
 
        i++;
+//    }
+}
+int Table::tryHand(int array[], int player)    //проверяет комбинации
+{
+    Card hand[5];
+
+    /* get cards from table and player */
+    for (int i = 1; i<4; i++)
+        hand[i - 1] = (tableCards[array[i]]);
+    if (player == 3)                            //если человек
+    {
+        for (int i = 0; i<2; i++)
+            hand[i + 3] = human.playerCards.at(i);
     }
+    else                                       //если комп
+    {
+        for (int i = 0; i < 2; i++)
+            hand[i + 3] = comp.at(player).playerCards.at(i);
+    }
+
+    return getScore(hand);
+
 }
 void Table::evaluateHands()
 {
+    int stack[10], k;
+    int currentPoints;
+
+    for (int q = 0; q<4; q++)
+    {
+        if (q!=3)
+        {
+            if (comp.at(q).round)
+            {
+                stack[0] = -1; /* -1 is not considered as part of the set */
+                k = 0;
+                while (1)
+                {
+                    if (stack[k] < 4)
+                    {
+                        stack[k + 1] = stack[k] + 1;
+                        k++;
+                    }
+                    else
+                    {
+                        stack[k - 1]++;
+                        k--;
+                    }
+                    if (k == 0)
+                        break;
+                    if (k == 3)
+                    {
+                        currentPoints = tryHand(stack, q);
+                        if (currentPoints > handPoints[q])
+                        {
+                            handPoints[q] = currentPoints;
+                            for (int x = 0; x < 3; x++)
+                                bestHand[q][x] = stack[x + 1];
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (human.round)
+            {
+                stack[0] = -1; /* -1 is not considered as part of the set */
+                k = 0;
+                while (1)
+                {
+                    if (stack[k] < 4)
+                    {
+                        stack[k + 1] = stack[k] + 1;
+                        k++;
+                    }
+                    else
+                    {
+                        stack[k - 1]++;
+                        k--;
+                    }
+                    if (k == 0)
+                        break;
+                    if (k == 3)
+                    {
+                        currentPoints = tryHand(stack, q);
+                        if (currentPoints > handPoints[q])
+                        {
+                            handPoints[q] = currentPoints;
+                            for (int x = 0; x < 3; x++)
+                                bestHand[q][x] = stack[x + 1];
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }
 
@@ -683,7 +792,8 @@ void Table::on_CheckButton_clicked()
     action = 2;
 }
 
-void Table::on_pushButton_clicked()
+
+void Table::on_betButton_clicked()
 {
     bet = ui->betEdit->toPlainText().toInt();
 }
